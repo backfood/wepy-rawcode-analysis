@@ -10,10 +10,10 @@
 class ModuleSet {
   constructor() {
     this._index = -1;
-    this._map = {};
-    this._set = {};
-    this._array = {};
-    this._type = {};
+    this._map = {}; // +map存储id
+    this._set = {}; // +file的data
+    this._array = {}; // +存储file
+    this._type = {}; // +file的类型
   }
 
   add(file, type) {
@@ -35,7 +35,7 @@ class ModuleSet {
     return this._map[file];
   }
 
-  pending(file) {
+  pending(file) { // +此file存在且file存在数据
     return this.get(file) !== undefined && this._set[file] === undefined;
   }
 

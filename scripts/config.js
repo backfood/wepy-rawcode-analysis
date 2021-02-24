@@ -1,5 +1,5 @@
-const buble = require('rollup-plugin-buble');
-const replace = require('rollup-plugin-replace');
+const buble = require('rollup-plugin-buble'); // es6 编译成es5
+const replace = require('rollup-plugin-replace'); // 打包时动态替换代码中的内容
 const path = require('path');
 
 const banner = `
@@ -11,7 +11,7 @@ const banner = `
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */`;
 
-const resolvePkgInfo = pkg => {
+const resolvePkgInfo = pkg => { // +对应package的位置
   const pkgPath = path.resolve(__dirname, '../packages', pkg, 'package.json');
   return require(pkgPath);
 };
@@ -41,7 +41,7 @@ const builds = {
     version: resolvePkgInfo('redux').version,
     banner
   },
-  x: {
+  x: { // +相当于时是vuex
     entry: 'packages/x/index.js',
     dest: 'packages/x/dist/index.js',
     env: 'development',
@@ -57,11 +57,11 @@ const builds = {
     version: resolvePkgInfo('use-promisify').version,
     banner
   },
-  'use-intercept': {
+  'use-intercept': { // 拦截器
     entry: 'packages/use-intercept/index.js',
     dest: 'packages/use-intercept/dist/index.js',
     env: 'development',
-    format: 'cjs',
+    format: 'cjs', // cjs 一种模块加载方法
     version: resolvePkgInfo('use-intercept').version,
     banner
   }
@@ -71,7 +71,7 @@ function getConfig(name) {
   let opt = builds[name];
   let config = {
     input: opt.entry,
-    external: opt.external,
+    external: opt.external, // +很明显啊 没有拓展
     plugins: [
       buble({
         objectAssign: 'Object.assign'

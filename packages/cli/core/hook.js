@@ -2,7 +2,7 @@ class Hook {
   constructor() {
     this._hooks = {};
   }
-
+// +由此可见 一个key可注册多个事件
   register(key, fn) {
     if (!this._hooks[key]) {
       this._hooks[key] = [];

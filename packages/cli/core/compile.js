@@ -6,12 +6,15 @@
  * http://opensource.org/licenses/MIT
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-const fs = require('fs-extra');
+// +核心代码
+const fs = require('fs-extra'); // fs 模块的拓展
 const path = require('path');
-const chokidar = require('chokidar');
+const chokidar = require('chokidar');// +监听文件变化
+// +enhanced-resolve带有缓冲功能的模块解析器
 const ResolverFactory = require('enhanced-resolve').ResolverFactory;
 const node = require('enhanced-resolve/lib/node');
 const NodeJsInputFileSystem = require('enhanced-resolve/lib/NodeJsInputFileSystem');
+// +文件缓存
 const CachedInputFileSystem = require('enhanced-resolve/lib/CachedInputFileSystem');
 const parseOptions = require('./parseOptions');
 const moduleSet = require('./moduleSet');
@@ -99,9 +102,9 @@ class Compile extends Hook {
     );
 
     let fnNormalBak = this.resolvers.normal.resolve;
-    this.resolvers.normal.resolve = function(...args) {
+    this.resolvers.normal.resolve = function (...args) {
       return new Promise((resolve, reject) => {
-        args.push(function(err, filepath, meta) {
+        args.push(function (err, filepath, meta) {
           if (err) {
             reject(err);
           } else {
@@ -112,9 +115,9 @@ class Compile extends Hook {
       });
     };
     let fnContextBak = this.resolvers.context.resolve;
-    this.resolvers.context.resolve = function(...args) {
+    this.resolvers.context.resolve = function (...args) {
       return new Promise((resolve, reject) => {
-        args.push(function(err, filepath, meta) {
+        args.push(function (err, filepath, meta) {
           if (err) {
             reject(err);
           } else {

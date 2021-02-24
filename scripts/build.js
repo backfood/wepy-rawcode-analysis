@@ -10,7 +10,7 @@ function build(config) {
 
   return rollup
     .rollup(config)
-    .then(bundle => bundle.generate(output))
+    .then(bundle => bundle.generate(output))// 生成code和sourcemap
     .then(rst => {
       write(file, rst.code);
     })
@@ -46,7 +46,7 @@ function getSize(code) {
   return (code.length / 1024).toFixed(2) + 'kb';
 }
 
-function blue(str) {
+function blue(str) {// 让console输出更有颜色
   return '\x1b[1m\x1b[34m' + str + '\x1b[39m\x1b[22m';
 }
 
