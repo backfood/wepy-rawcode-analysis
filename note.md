@@ -8,9 +8,10 @@
 
 process http://nodejs.cn/api/process.html#process_process
 process 是node的全局对象 
-- 用于获取进程信息
-- 执行进程操作
-- 属性
+- desc 
+  - 用于获取进程信息
+  - 执行进程操作
+- attr
     - execPath 可执行文件的绝对路径
     - version 版本号
     - versions依赖库的版本号
