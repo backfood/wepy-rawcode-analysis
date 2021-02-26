@@ -14,11 +14,15 @@ const methodsToPatch = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 're
 /**
  * Intercept mutating methods and emit events
  */
-methodsToPatch.forEach(function(method) {
+methodsToPatch.forEach(function (method) {
   // cache original method
   const original = arrayProto[method];
-  def(arrayMethods, method, function mutator(...args) {
+  // +关于这一部分的使用可以看看MDN
+  // +https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create#%E4%BD%BF%E7%94%A8_object.create_%E7%9A%84_propertyobject%E5%8F%82%E6%95%B0
+  // +重写数组方法后调用的的是arrayMethods而不是数组的方法
+  def(arrayMethods, method, function mutator(...args) { // 获取不可迭代的参数数组
     const len = this.length;
+    // 不知道this.length是指什么？？？？？
     // 清除已经失效的 paths
     if (len > 0) {
       switch (method) {

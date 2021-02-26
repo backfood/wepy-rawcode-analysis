@@ -1,3 +1,11 @@
+
+ /* Tencent is pleased to support the open source community by making WePY available.
+ * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
 'use strict';
 
 // can we use __proto__?
@@ -233,7 +241,15 @@ function clone(sth, deep) {
   }
 }
 
-var WEAPP_APP_LIFECYCLE = ['onLaunch', 'onShow', 'onHide', 'onError', 'onPageNotFound'];
+var WEAPP_APP_LIFECYCLE = [
+  'onLaunch',
+  'onShow',
+  'onHide',
+  'onError',
+  'onPageNotFound',
+  'onUnhandledRejection',
+  'onThemeChange'
+];
 
 var WEAPP_PAGE_LIFECYCLE = [
   'onLoad',
@@ -244,17 +260,22 @@ var WEAPP_PAGE_LIFECYCLE = [
   'onPullDownRefresh',
   'onReachBottom',
   'onShareAppMessage',
+  'onAddToFavorites',
   'onPageScroll',
+  'onResize',
   'onTabItemTap',
-  'onResize'
+  'onShareTimeline'
 ];
 
-var WEAPP_COMPONENT_LIFECYCLE = ['beforeCreate', 'created', 'attached', 'ready', 'moved', 'detached'];
+var WEAPP_COMPONENT_LIFECYCLE = ['beforeCreate', 'created', 'attached', 'ready', 'moved', 'detached', 'error'];
+
+var WEAPP_COMPONENT_PAGE_LIFECYCLE = ['show', 'hide', 'resize'];
 
 var WEAPP_LIFECYCLE = []
   .concat(WEAPP_APP_LIFECYCLE)
   .concat(WEAPP_PAGE_LIFECYCLE)
-  .concat(WEAPP_COMPONENT_LIFECYCLE);
+  .concat(WEAPP_COMPONENT_LIFECYCLE)
+  .concat(WEAPP_COMPONENT_PAGE_LIFECYCLE);
 
 var config = {};
 
@@ -537,9 +558,10 @@ Dep.prototype.depend = function depend () {
 
 Dep.prototype.notify = function notify () {
   // stabilize the subscriber list first
+  // 复制产生一个新的数组 这里不能理解 原数组没有改变 也没有返回值 是为了什么呢？
   var subs = this.subs.slice();
   for (var i = 0, l = subs.length; i < l; i++) {
-    subs[i].update();
+    subs[i].update(); // +而且还没有这个方法 可能其他地方有吧
   }
 };
 
@@ -712,13 +734,13 @@ var methodsToPatch = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reve
 /**
  * Intercept mutating methods and emit events
  */
-methodsToPatch.forEach(function(method) {
+methodsToPatch.forEach(function (method) {
   // cache original method
   var original = arrayProto[method];
   def(arrayMethods, method, function mutator() {
     var args = [], len$1 = arguments.length;
     while ( len$1-- ) args[ len$1 ] = arguments[ len$1 ];
-
+ // +为什么这个函数还要有名字？？？？
     var len = this.length;
     // 清除已经失效的 paths
     if (len > 0) {
@@ -2791,6 +2813,6 @@ var wepy = initGlobalAPI(WepyConstructor);
 
 wepy.config = config$1;
 wepy.global = $global;
-wepy.version = "2.0.0-alpha.16";
+wepy.version = "2.1.0";
 
 module.exports = wepy;

@@ -10,7 +10,7 @@ function build(config) {
 
   return rollup
     .rollup(config)
-    .then(bundle => bundle.generate(output))// 生成code和sourcemap
+    .then(bundle => bundle.generate(output))// +生成code和sourcemap
     .then(rst => {
       write(file, rst.code);
     })

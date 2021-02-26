@@ -6,12 +6,12 @@
 import { hasOwn, isNum, isObject, remove } from '../util/index';
 
 /**
- * 生成完整路径
+ * 生成完整路径 生成$parent $开头的等等属性
  * @param key  {String|Number} 当为字符串时，说明是属性名，当为数字时，说明是索引
  * @param parentPath {String} 父路径
  * @return {string}
  */
-const setPath = (key, parentPath) => {
+const setPath = (key, parentPath) => {// +如果是数字 则返回a.b 否则返回a.$b
   return isNum(key) ? `${parentPath}[${key}]` : `${parentPath}.${key}`;
 };
 

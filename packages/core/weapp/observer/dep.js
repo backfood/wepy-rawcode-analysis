@@ -29,9 +29,10 @@ export default class Dep {
 
   notify() {
     // stabilize the subscriber list first
+    // 复制产生一个新的数组 这里不能理解 原数组没有改变 也没有返回值 是为了什么呢？
     const subs = this.subs.slice();
     for (let i = 0, l = subs.length; i < l; i++) {
-      subs[i].update();
+      subs[i].update(); // +而且还没有这个方法 可能其他地方有吧
     }
   }
 }
